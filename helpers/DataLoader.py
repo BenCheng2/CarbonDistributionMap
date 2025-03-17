@@ -102,6 +102,13 @@ class DataLoader:
             "57": 78.63002336, "6": 1117.921164, "60": 1336.999063
         }
 
+        self.voltage_colors = {
+            69: 'purple',
+            138: 'green',
+            240: 'red',
+            500: 'blue'
+        }
+
     def initialize_city(self):
         self.city_to_population = {
             row["Geographic name"]: {
