@@ -15,7 +15,11 @@ class DataLoader:
         self.lines_df = pd.read_csv("..\\data\\Line.csv")
         self.points_df = pd.read_csv("..\\data\\Substation.csv")
 
-        self.points_df['substation'] = self.points_df['substation'].astype(str).str.replace("\n", " ", regex=False)
+        self.points_df['substation'] = (
+            self.points_df['substation']
+            .astype(str)
+            .str.replace(r'[\r\n]+', ' ', regex=True)
+        )
 
         self.cities_df = pd.read_csv("..\\data\\CityPopulationPoint.csv")
         self.city_population_df = pd.read_csv(
