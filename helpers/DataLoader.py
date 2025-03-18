@@ -89,22 +89,23 @@ class DataLoader:
             35: "47", 36: "48", 37: "37", 38: "32", 39: "13", 40: "4", 41: "52", 42: "54",
         }
 
-        self.planning_area_demand = {
-            "13": 88.38278669, "17": 12.04196276, "18": 36.17893041,
-            "19": 73.00554772, "20": 280.4811969, "21": 76.97281901,
-            "22": 54.94081613, "23": 23.71919409, "24": 82.96259741,
-            "25": 688.6553387, "26": 197.2051341, "27": 110.8820988,
-            "28": 127.2668358, "29": 102.5243876, "30": 122.2662221,
-            "31": 100.3836397, "32": 113.4536098, "33": 438.5963687,
-            "34": 0.889557235, "35": 290.9455893, "36": 5.963649042,
-            "37": 85.62676906, "38": 78.23276669, "39": 54.33080358,
-            "4": 27.3007367, "40": 118.4485291, "42": 125.4732716,
-            "43": 12.15392398, "44": 162.9562344, "45": 70.62387543,
-            "46": 67.82961904, "47": 67.52823509, "48": 167.9488733,
-            "49": 11.20478423, "52": 67.60249808, "53": 19.61909364,
-            "54": 131.9363219, "55": 24.8988913, "56": 59.55911042,
-            "57": 78.63002336, "6": 1117.921164, "60": 1336.999063
-        }
+        self.planning_area_demand = self.initialize_planning_area_demand()
+        # self.planning_area_demand = {
+        #     "13": 88.38278669, "17": 12.04196276, "18": 36.17893041,
+        #     "19": 73.00554772, "20": 280.4811969, "21": 76.97281901,
+        #     "22": 54.94081613, "23": 23.71919409, "24": 82.96259741,
+        #     "25": 688.6553387, "26": 197.2051341, "27": 110.8820988,
+        #     "28": 127.2668358, "29": 102.5243876, "30": 122.2662221,
+        #     "31": 100.3836397, "32": 113.4536098, "33": 438.5963687,
+        #     "34": 0.889557235, "35": 290.9455893, "36": 5.963649042,
+        #     "37": 85.62676906, "38": 78.23276669, "39": 54.33080358,
+        #     "4": 27.3007367, "40": 118.4485291, "42": 125.4732716,
+        #     "43": 12.15392398, "44": 162.9562344, "45": 70.62387543,
+        #     "46": 67.82961904, "47": 67.52823509, "48": 167.9488733,
+        #     "49": 11.20478423, "52": 67.60249808, "53": 19.61909364,
+        #     "54": 131.9363219, "55": 24.8988913, "56": 59.55911042,
+        #     "57": 78.63002336, "6": 1117.921164, "60": 1336.999063
+        # }
 
         self.voltage_colors = {
             69: 'purple',
@@ -114,13 +115,15 @@ class DataLoader:
         }
 
     def initialize_city(self):
+        # self.city_to_population = {
+        #     row["Geographic name"]: {
+        #         "population": row["Population, 2016"],
+        #         "area": row["Land area in square kilometres, 2021"]
+        #     }
+        #     for _, row in self.city_population_df.iterrows()
+        # }
         self.city_to_population = {
-            row["Geographic name"]: {
-                "population": row["Population, 2016"],
-                "area": row["Land area in square kilometres, 2021"]
-            }
-            for _, row in self.city_population_df.iterrows()
-        }
+            row["Geographic name"]: row["Population, 2016"] for _, row in self.city_population_df.iterrows()}
 
         self.city_to_coordinates = {
             row["name"]: (row["x"], row["y"])
@@ -183,6 +186,27 @@ class DataLoader:
 
     def get_city_population_ratio(self):
         total_population = 4262635
-        total_city_population = sum([value["population"] for key, value in self.city_to_population.items()])
+        total_city_population = sum([value for key, value in self.city_to_population.items()])
         print(total_city_population)
         return total_city_population / total_population
+
+    def initialize_planning_area_demand(self):
+        df = pd.read_excel("..\\data\\AverageHourLoad.xlsx")
+
+        df['YEAR'] = df['YEAR'].astype(int)
+
+        result_dict = {}
+
+        for _, row in df.iterrows():
+            year = int(row['YEAR'])
+
+            sub_dict = {}
+
+            for col in df.columns:
+                if col != 'YEAR':
+                    area_key = col.replace("AREA", "")
+                    sub_dict[area_key] = float(row[col])
+
+            result_dict[year] = sub_dict
+
+        return result_dict
