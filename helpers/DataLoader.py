@@ -29,8 +29,8 @@ class DataLoader:
         self.line_voltage_df = pd.read_csv("..\\data\\LineVoltage.csv")
         self.generator_substation_df = pd.read_csv("..\\data\\GeneratorSubstation.csv")
 
-        self.city_population_df["Population, 2016"] = (
-            self.city_population_df["Population, 2016"]
+        self.city_population_df["Population, 2021"] = (
+            self.city_population_df["Population, 2021"]
             .astype(str)
             .str.replace("r", "", regex=False)
             .str.replace(",", "", regex=False)
@@ -117,13 +117,13 @@ class DataLoader:
     def initialize_city(self):
         # self.city_to_population = {
         #     row["Geographic name"]: {
-        #         "population": row["Population, 2016"],
+        #         "population": row["Population, 2021"],
         #         "area": row["Land area in square kilometres, 2021"]
         #     }
         #     for _, row in self.city_population_df.iterrows()
         # }
         self.city_to_population = {
-            row["Geographic name"]: row["Population, 2016"] for _, row in self.city_population_df.iterrows()}
+            row["Geographic name"]: row["Population, 2021"] for _, row in self.city_population_df.iterrows()}
 
         self.city_to_coordinates = {
             row["name"]: (row["x"], row["y"])
@@ -187,7 +187,7 @@ class DataLoader:
     def get_city_population_ratio(self):
         total_population = 4262635
         total_city_population = sum([value for key, value in self.city_to_population.items()])
-        print(total_city_population)
+        print(total_city_population / total_population)
         return total_city_population / total_population
 
     def initialize_planning_area_demand(self):
