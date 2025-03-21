@@ -23,7 +23,7 @@ class DataLoader:
 
         self.cities_df = pd.read_csv("..\\data\\CityPopulationPoint.csv")
         self.city_population_df = pd.read_csv(
-            "..\\data\\Population City Distribution.csv")  # Data Source: https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810001101
+            "../data/PopulationCityDistribution.csv")  # Data Source: https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810001101
         self.planning_area_border_df = pd.read_csv("..\\data\\PlanningAreaBorder.csv")
         self.city_border_df = pd.read_csv("..\\data\\CityBorder.csv")
         self.line_voltage_df = pd.read_csv("..\\data\\LineVoltage.csv")
