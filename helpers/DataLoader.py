@@ -29,6 +29,9 @@ class DataLoader:
         self.line_voltage_df = pd.read_csv("..\\data\\LineVoltage.csv")
         self.generator_substation_df = pd.read_csv("..\\data\\GeneratorSubstation.csv")
 
+        # self.generator_supply_df = None
+        self.generator_supply_df = pd.read_csv("..\\data\\supply\\GeneratorSupply_20250326_1634.csv")
+
         self.city_population_df["Population, 2021"] = (
             self.city_population_df["Population, 2021"]
             .astype(str)
@@ -162,15 +165,32 @@ class DataLoader:
                 self.direct_station_pairs_to_line[(start, end)] = self.undirect_station_pairs_to_line[(start, end)]
 
     def initialize_generator_mappings(self):
-        for _, row in self.generator_substation_df.iterrows():
-            if pd.notnull(row["Substation"]):
+        if self.generator_supply_df is not None:
+            for _, row in self.generator_substation_df.iterrows():
+                if pd.notnull(row["Substation"]):
+                    generator_name = row["Generator Name"]
+                    substation = row["Substation"]
+
+                    self.generators_to_substations[generator_name] = substation
+                    self.generators_to_capacities[generator_name] = 0
+                    self.substations_to_generators.setdefault(substation, []).append(generator_name)
+
+            # Read the capacity from the generator supply data
+            for _, row in self.generator_supply_df.iterrows():
                 generator_name = row["Generator Name"]
-                substation = row["Substation"]
+                supply = row["Supply"]
 
-                self.generators_to_substations[generator_name] = substation
-                self.generators_to_capacities[generator_name] = row["Maximum Capability"]
+                if generator_name in self.generators_to_capacities:
+                    self.generators_to_capacities[generator_name] = supply
+        else:
+            for _, row in self.generator_substation_df.iterrows():
+                if pd.notnull(row["Substation"]):
+                    generator_name = row["Generator Name"]
+                    substation = row["Substation"]
 
-                self.substations_to_generators.setdefault(substation, []).append(generator_name)
+                    self.generators_to_substations[generator_name] = substation
+                    self.generators_to_capacities[generator_name] = row["Maximum Capability"]
+                    self.substations_to_generators.setdefault(substation, []).append(generator_name)
 
     def initialize_network_voltage(self):
         self.substations_to_voltage = {row["substation"]: voltage_mapping.get(str(row["voltage"]), None) for _, row in
