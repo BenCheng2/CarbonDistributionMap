@@ -29,8 +29,13 @@ class DataLoader:
         self.line_voltage_df = pd.read_csv("..\\data\\LineVoltage.csv")
         self.generator_substation_df = pd.read_csv("..\\data\\GeneratorSubstation.csv")
 
-        # self.generator_supply_df = None
-        self.generator_supply_df = pd.read_csv("..\\data\\supply\\GeneratorSupply_20250326_1634.csv")
+        self.generator_supply_df = None
+        # Morning
+        # self.generator_supply_df = pd.read_csv("..\\data\\supply\\GeneratorSupply_20250328_0930.csv")
+        # Afternoon
+        # self.generator_supply_df = pd.read_csv("..\\data\\supply\\GeneratorSupply_20250327_1530.csv")
+        # Evening
+        # self.generator_supply_df = pd.read_csv("..\\data\\supply\\GeneratorSupply_20250327_2030.csv")
 
         self.city_population_df["Population, 2021"] = (
             self.city_population_df["Population, 2021"]
@@ -166,6 +171,7 @@ class DataLoader:
 
     def initialize_generator_mappings(self):
         if self.generator_supply_df is not None:
+            print("Generator current supply data is available.")
             for _, row in self.generator_substation_df.iterrows():
                 if pd.notnull(row["Substation"]):
                     generator_name = row["Generator Name"]
@@ -183,6 +189,7 @@ class DataLoader:
                 if generator_name in self.generators_to_capacities:
                     self.generators_to_capacities[generator_name] = supply
         else:
+            print("Consider generator in full capacity.")
             for _, row in self.generator_substation_df.iterrows():
                 if pd.notnull(row["Substation"]):
                     generator_name = row["Generator Name"]
