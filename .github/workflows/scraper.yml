@@ -1,0 +1,39 @@
+name: Fetch Generator Supply Every 15 Min
+
+on:
+  schedule:
+    - cron: '*/1 * * * *'  
+  workflow_dispatch:        
+
+permissions:
+  contents: write             
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 pytz
+
+      - name: Run fetch script
+        run: |
+          python fetch_generator_supply.py
+
+      - name: Commit and push CSV file
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add GeneratorSupply_*.csv
+          timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
+          git commit -m "Automated update at ${timestamp}" || echo "No changes to commit"
+          git push
