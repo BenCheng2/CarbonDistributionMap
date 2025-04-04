@@ -27,7 +27,7 @@ jobs:
 
       - name: Run fetch script
         run: |
-          python scraper_script_ontime.py
+          python scraper/scraper_script_ontime.py
 
       - name: Commit and push CSV file
         run: |
