@@ -1,8 +1,8 @@
-name: Fetch Generator Supply Every 15 Min
+name: Fetch Generator Supply Every 5 Min
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  
+    - cron: '*/5 * * * *'  
   workflow_dispatch:        
 
 permissions:
