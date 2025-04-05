@@ -183,6 +183,15 @@ class DataLoader:
                     self.generators_to_capacities[generator_name] = row["Maximum Capability"]
                     self.substations_to_generators.setdefault(substation, []).append(generator_name)
 
+    def update_generator_mapping(self, new_generator_supply_df):
+        self.generators_to_capacities.clear()
+
+        for _, row in new_generator_supply_df.iterrows():
+            generator_name = row["Generator Name"]
+            supply = row["Supply"]
+
+            self.generators_to_capacities[generator_name] = supply
+
     def initialize_network_voltage(self):
         self.substations_to_voltage = {row["substation"]: voltage_mapping.get(str(row["voltage"]), None) for _, row in
                                        self.points_df.iterrows()}
@@ -198,7 +207,7 @@ class DataLoader:
     def get_city_population_ratio(self):
         total_population = 4262635
         total_city_population = sum([value for key, value in self.city_to_population.items()])
-        print(total_city_population / total_population)
+        # print(total_city_population / total_population)
         return total_city_population / total_population
 
     def initialize_planning_area_demand(self):
