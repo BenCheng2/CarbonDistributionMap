@@ -37,6 +37,11 @@ class DataLoader:
         # Evening
         # self.generator_supply_df = pd.read_csv("..\\data\\supply\\GeneratorSupply_20250327_2030.csv")
 
+        # Morning (24 Hour)
+        # self.generator_supply_df = pd.read_csv("..\\data\\timeseries\\local\\GeneratorSupply_20250405_0801.csv")
+        # Evening (24 Hour)
+        # self.generator_supply_df = pd.read_csv("..\\data\\timeseries\\local\\GeneratorSupply_20250405_2004.csv")
+
         self.city_population_df["Population, 2021"] = (
             self.city_population_df["Population, 2021"]
             .astype(str)
