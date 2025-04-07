@@ -12,8 +12,8 @@ voltage_mapping = {
 class DataLoader:
     def __init__(self):
         # Load DataFrame
-        self.lines_df = pd.read_csv("..\\data\\Line.csv")
-        self.points_df = pd.read_csv("..\\data\\Substation.csv")
+        self.lines_df = pd.read_csv("../data/Line.csv")
+        self.points_df = pd.read_csv("../data/Substation.csv")
 
         self.points_df['substation'] = (
             self.points_df['substation']
@@ -21,26 +21,26 @@ class DataLoader:
             .str.replace(r'[\r\n]+', ' ', regex=True)
         )
 
-        self.cities_df = pd.read_csv("..\\data\\CityPopulationPoint.csv")
+        self.cities_df = pd.read_csv("../data/CityPopulationPoint.csv")
         self.city_population_df = pd.read_csv(
             "../data/PopulationCityDistribution.csv")  # Data Source: https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810001101
-        self.planning_area_border_df = pd.read_csv("..\\data\\PlanningAreaBorder.csv")
-        self.city_border_df = pd.read_csv("..\\data\\CityBorder.csv")
-        self.line_voltage_df = pd.read_csv("..\\data\\LineVoltage.csv")
-        self.generator_substation_df = pd.read_csv("..\\data\\GeneratorSubstation.csv")
+        self.planning_area_border_df = pd.read_csv("../data/PlanningAreaBorder.csv")
+        self.city_border_df = pd.read_csv("../data/CityBorder.csv")
+        self.line_voltage_df = pd.read_csv("../data/LineVoltage.csv")
+        self.generator_substation_df = pd.read_csv("../data/GeneratorSubstation.csv")
 
         self.generator_supply_df = None
         # Morning
-        # self.generator_supply_df = pd.read_csv("..\\data\\supply\\GeneratorSupply_20250328_0930.csv")
+        # self.generator_supply_df = pd.read_csv("../data/supply/GeneratorSupply_20250328_0930.csv")
         # Afternoon
-        # self.generator_supply_df = pd.read_csv("..\\data\\supply\\GeneratorSupply_20250327_1530.csv")
+        # self.generator_supply_df = pd.read_csv("../data/supply/GeneratorSupply_20250327_1530.csv")
         # Evening
-        # self.generator_supply_df = pd.read_csv("..\\data\\supply\\GeneratorSupply_20250327_2030.csv")
+        # self.generator_supply_df = pd.read_csv("../data/supply/GeneratorSupply_20250327_2030.csv")
 
         # Morning (24 Hour)
-        # self.generator_supply_df = pd.read_csv("..\\data\\timeseries\\local\\GeneratorSupply_20250405_0801.csv")
+        # self.generator_supply_df = pd.read_csv("../data/timeseries/local/GeneratorSupply_20250405_0801.csv")
         # Evening (24 Hour)
-        # self.generator_supply_df = pd.read_csv("..\\data\\timeseries\\local\\GeneratorSupply_20250405_2004.csv")
+        # self.generator_supply_df = pd.read_csv("../data/timeseries/local/GeneratorSupply_20250405_2004.csv")
 
         self.city_population_df["Population, 2021"] = (
             self.city_population_df["Population, 2021"]
@@ -216,7 +216,7 @@ class DataLoader:
         return total_city_population / total_population
 
     def initialize_planning_area_demand(self):
-        df = pd.read_excel("..\\data\\AverageHourLoad.xlsx")
+        df = pd.read_excel("../data/AverageHourLoad.xlsx")
 
         df['YEAR'] = df['YEAR'].astype(int)
 
