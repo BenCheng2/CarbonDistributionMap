@@ -51,15 +51,13 @@
 3. Change the year to the target year
 4. Restart the kernel and run the notebook
 
-## 8. Duplicate the QGIS visualization
-1. Open /data/qgis
-2. .shp files conatains the spatial data for different layers
-3. .prj files contains the projection information
-4. .qgs files contains the main QGIS project information
-5. Use .prj and .qgs files to create or open a QGIS project
-6. Import .shp files into the QGIS project
-7. Adjust the CRS to the target CRS: EPSG:3857
-
-## 9. Duplicate City Border Visualization with Color
+## 8. Duplicate City Border Visualization with Color
 1. Open /lab/AdditionalVisualization.ipynb
 2. Execute the notebook
+3. 
+## 9. Duplicate the QGIS visualization
+1. Open /data/qgis
+2. .shp files conatains the spatial data for different layers
+3. .qgs files contains the main QGIS project information
+4. Install Freehand Raster Georeferencer plugin
+5. Open .qgs file with QGIS software, the shapefiles will be loaded automatically
